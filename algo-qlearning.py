@@ -5,8 +5,8 @@ import time, pickle, os
 env = gym.make('FrozenLake-v0')
 
 epsilon = 0.9
-total_episodes = 10000
-max_steps = 100
+total_episodes = 1000
+max_steps = 10
 
 lr_rate = 0.81
 gamma = 0.96
@@ -29,30 +29,35 @@ def learn(state, state2, reward, action):
     Q[state, action] = Q[state, action] + lr_rate * (target - predict)
 
 
-# Start
-for episode in range(total_episodes):
-    state = env.reset()
-    t = 0
+def runQLearning():
+    # Start
+    for episode in range(total_episodes):
+        state = env.reset()
+        t = 0
 
-    while t < max_steps:
-        env.render()
+        while t < max_steps:
+            env.render()
 
-        action = choose_action(state)
+            action = choose_action(state)
 
-        state2, reward, done, info = env.step(action)
+            state2, reward, done, info = env.step(action)
 
-        learn(state, state2, reward, action)
+            learn(state, state2, reward, action)
 
-        state = state2
+            state = state2
 
-        t += 1
+            t += 1
 
-        if done:
-            break
+            if done:
+                break
 
-        time.sleep(0.1)
+            time.sleep(0.1)
 
-print(Q)
+    print(Q)
 
-with open("frozenLake_qTable.pkl", 'wb') as f:
-    pickle.dump(Q, f)
+    with open("frozenLake_qTable.pkl", 'wb') as f:
+        pickle.dump(Q, f)
+
+
+if __name__ == "__main__":
+    runQLearning()
