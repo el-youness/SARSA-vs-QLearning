@@ -5,8 +5,12 @@ import time, pickle, os
 env = gym.make('FrozenLake-v0')
 
 epsilon = 0.9
+# min_epsilon = 0.1
+# max_epsilon = 1.0
+# decay_rate = 0.01
+
 total_episodes = 1000
-max_steps = 10
+max_steps = 100
 
 lr_rate = 0.81
 gamma = 0.96
@@ -23,41 +27,42 @@ def choose_action(state):
     return action
 
 
-def learn(state, state2, reward, action):
+def learn(state, state2, reward, action, action2):
     predict = Q[state, action]
-    target = reward + gamma * np.max(Q[state2, :])
+    target = reward + gamma * Q[state2, action2]
     Q[state, action] = Q[state, action] + lr_rate * (target - predict)
 
-
-def runQLearning():
+def sarsaAlgo():
     # Start
+    rewards = 0
+
     for episode in range(total_episodes):
-        state = env.reset()
         t = 0
+        state = env.reset()
+        action = choose_action(state)
 
         while t < max_steps:
             env.render()
 
-            action = choose_action(state)
-
             state2, reward, done, info = env.step(action)
 
-            learn(state, state2, reward, action)
+            action2 = choose_action(state2)
+
+            learn(state, state2, reward, action, action2)
 
             state = state2
+            action = action2
 
             t += 1
+            rewards += 1
 
             if done:
                 break
+            # epsilon = min_epsilon + (max_epsilon - min_epsilon) * np.exp(-decay_rate * episode)
+            # os.system('clear')
 
-            time.sleep(0.1)
-
+    print ("Score over time: ", rewards / total_episodes)
     print(Q)
 
-    with open("frozenLake_qTable.pkl", 'wb') as f:
+    with open("frozenLake_qTable_sarsa.pkl", 'wb') as f:
         pickle.dump(Q, f)
-
-
-if __name__ == "__main__":
-    runQLearning()
