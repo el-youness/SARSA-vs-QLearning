@@ -1,6 +1,5 @@
 import gym
 import numpy as np
-import time, pickle, os
 
 env = gym.make('FrozenLake-v0')
 
@@ -32,7 +31,7 @@ def learn(state, state2, reward, action, action2):
     target = reward + gamma * Q[state2, action2]
     Q[state, action] = Q[state, action] + lr_rate * (target - predict)
 
-def sarsaAlgo():
+def algo():
     # Start
     rewards = 0
 
@@ -61,8 +60,6 @@ def sarsaAlgo():
             # epsilon = min_epsilon + (max_epsilon - min_epsilon) * np.exp(-decay_rate * episode)
             # os.system('clear')
 
-    print ("Score over time: ", rewards / total_episodes)
-    print(Q)
+    score = rewards / total_episodes
 
-    with open("frozenLake_qTable_sarsa.pkl", 'wb') as f:
-        pickle.dump(Q, f)
+    return Q
