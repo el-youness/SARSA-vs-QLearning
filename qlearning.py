@@ -1,7 +1,12 @@
 import gym
+from gym import wrappers, logger
+
 import numpy as np
 
+gym.logger.set_level(50)
 env = gym.make('FrozenLake-v0')
+
+
 Q = np.zeros((env.observation_space.n, env.action_space.n))
 
 
@@ -41,11 +46,13 @@ def algo(epsilon, total_episodes, max_steps, lr_rate, gamma):
 
             t += 1
 
+            #You receive a reward of 1 if you reach the goal, and zero otherwise.
             rewards += reward
 
             if done:
                 break
-                
     score = rewards / total_episodes
+    print('played',total_episodes)
+    print('won',rewards)
+    print('score',score)
 
-    return Q

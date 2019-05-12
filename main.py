@@ -1,17 +1,14 @@
 import sarsa
 import qlearning
-import pickle
 
-def dump_Q_table(filename, qtable):
-    with open(filename, 'wb') as f:
-        pickle.dump(qtable, f)
+
 
 def main():
-    epsilon = 0.9
-    total_episodes = 1
+    epsilon = 0.5
+    total_episodes = 100000
     max_steps = 100
 
-    lr_rate = 0.81
+    lr_rate = 0.1
     gamma = 0.96
 
     algos_f = {
@@ -20,8 +17,7 @@ def main():
     }
 
     # Here we chose an algo
-    Q = algos_f["1"]()
-    dump_Q_table()
+    Q = algos_f["2"].algo(epsilon, total_episodes, max_steps, lr_rate, gamma)
 
 
 if __name__ == "__main__":
