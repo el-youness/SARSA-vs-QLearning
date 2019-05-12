@@ -65,15 +65,13 @@ def algo(epsilon, total_episodes, max_steps, lr_rate, gamma):
                     obs, rew, done, info = env.step(action)  # take step using selected action
                     rew_average += rew
             rew_average = rew_average / 100
-            print('Episode {} avarage reward: {}'.format(episode, rew_average))
+            print(rew_average)
 
-            if rew_average > 0.8:
-                # FrozenLake-v0 defines "solving" as getting average reward of 0.78 over 100 consecutive trials.
-                # Test it on 0.8 so it is not a one-off lucky shot solving it
+            '''if rew_average > 0.8:
                 print("Frozen lake solved")
                 break
+            '''
     score = rewards / total_episodes
-    print('played',total_episodes)
-    print('won',rewards)
-    print('score',score)
+    print(score)
+
 
