@@ -1,6 +1,6 @@
 import gym
 import numpy as np
-
+import os
 env = gym.make('FrozenLake-v0')
 
 min_epsilon = 0.1
@@ -36,8 +36,6 @@ def algo(epsilon, total_episodes, max_steps, lr_rate, gamma):
         action = choose_action(state, epsilon)
 
         while t < max_steps:
-            env.render()
-
             state2, reward, done, info = env.step(action)
 
             action2 = choose_action(state2, epsilon)
@@ -54,7 +52,7 @@ def algo(epsilon, total_episodes, max_steps, lr_rate, gamma):
             if done:
                 break
             epsilon = min_epsilon + (max_epsilon - min_epsilon) * np.exp(-decay_rate * episode)
-            #os.system('clear')
+
 
     score = rewards / total_episodes
     print('played', total_episodes)

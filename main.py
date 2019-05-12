@@ -17,7 +17,7 @@ def main():
     }
 
     # Here we chose an algo
-    Q = algos_f["2"].algo(epsilon, total_episodes, max_steps, lr_rate, gamma)
+    Q = algos_f["1"].algo(epsilon, total_episodes, max_steps, lr_rate, gamma)
 
 
 if __name__ == "__main__":
