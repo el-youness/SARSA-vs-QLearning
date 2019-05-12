@@ -26,7 +26,7 @@ def learn(state, state2, reward, action, action2, lr_rate, gamma):
     target = reward + gamma * Q[state2, action2]
     Q[state, action] = Q[state, action] + lr_rate * (target - predict)
 
-def algo(epsilon, total_episodes, max_steps, lr_rate, gamma):
+def algo(epsilon, total_episodes, max_steps, lr_rate, gamma, activ_decay):
     # Start
     rewards = 0
 
@@ -51,13 +51,15 @@ def algo(epsilon, total_episodes, max_steps, lr_rate, gamma):
 
             if done:
                 break
-            epsilon = min_epsilon + (max_epsilon - min_epsilon) * np.exp(-decay_rate * episode)
 
-        if episode % 1000 == 0:
+            if activ_decay:
+                epsilon = min_epsilon + (max_epsilon - min_epsilon) * np.exp(-decay_rate * episode)
+
+        if episode % 10000 == 0:
 
             # report every 5000 steps, test 100 games to get avarage point score for statistics and verify if it is solved
             rew_av_av = 0
-            for _ in range(3):
+            for _ in range(10):
                 rew_average = 0.
                 for i in range(100):
                     obs = env.reset()
@@ -68,5 +70,5 @@ def algo(epsilon, total_episodes, max_steps, lr_rate, gamma):
                         rew_average += rew
                 rew_average = rew_average / 100
                 rew_av_av += rew_average
-            rew_av_av = rew_av_av / 3
+            rew_av_av = rew_av_av / 10
             print(rew_average)

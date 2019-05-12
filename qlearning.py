@@ -1,9 +1,9 @@
 import gym
 from gym import wrappers, logger
-
+from tqdm import tqdm
 import numpy as np
 
-env = gym.make('FrozenLake-v0')
+env = gym.make('FrozenLake8x8-v0')
 
 min_epsilon = 0.1
 max_epsilon = 1.0
@@ -29,7 +29,7 @@ def learn(state, state2, reward, action, lr_rate, gamma):
     Q[state, action] = Q[state, action] + lr_rate * (target - predict)
 
 
-def algo(epsilon, total_episodes, max_steps, lr_rate, gamma):
+def algo(epsilon, total_episodes, max_steps, lr_rate, gamma, activ_decay):
     rewards = 0
     # Start
     for episode in range(total_episodes):
@@ -52,13 +52,15 @@ def algo(epsilon, total_episodes, max_steps, lr_rate, gamma):
 
             if done:
                 break
-            epsilon = min_epsilon + (max_epsilon - min_epsilon) * np.exp(-decay_rate * episode)
 
-        if episode % 1000 == 0:
+            if activ_decay:
+                epsilon = min_epsilon + (max_epsilon - min_epsilon) * np.exp(-decay_rate * episode)
+
+        if episode % 10000 == 0:
 
             # report every 5000 steps, test 100 games to get avarage point score for statistics and verify if it is solved
             rew_av_av = 0
-            for _ in range(3):
+            for _ in range(10):
                 rew_average = 0.
                 for i in range(100):
                     obs = env.reset()
@@ -69,7 +71,7 @@ def algo(epsilon, total_episodes, max_steps, lr_rate, gamma):
                         rew_average += rew
                 rew_average = rew_average / 100
                 rew_av_av += rew_average
-            rew_av_av = rew_av_av/3
+            rew_av_av = rew_av_av/10
             print(rew_average)
 
 
