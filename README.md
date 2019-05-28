@@ -1,6 +1,6 @@
 # Articial Intelligence Project : Q-learning versus SARSA for solving FrozenLake
 
-**The full analysis and comparison of these 2 algorithms is described in the `report.pdf` file**
+### The full analysis and comparison of these 2 algorithms is described in the `report.pdf` file
 
 `main.py` imports the `qlearning.py` and `sarsa.py` files that contains the algos.
 
