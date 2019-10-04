@@ -1,4 +1,4 @@
-# Articial Intelligence Project : Q-learning versus SARSA for solving FrozenLake
+# Artificial Intelligence Project : Q-learning versus SARSA for solving FrozenLake
 
 ### The full analysis and comparison of these 2 algorithms is described in the `report.pdf` file
 
